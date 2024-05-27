@@ -1,4 +1,4 @@
-// stack 연습
+// queue 연습
 #include <iostream>
 #include <queue>
 using namespace std;
