@@ -14,6 +14,10 @@ int main()
 			{
 				swap(a[j], a[j - 1]);
 			}
+            else
+            {
+                break;
+            }
 		}
 	}
 
