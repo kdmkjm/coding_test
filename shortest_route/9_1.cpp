@@ -3,7 +3,6 @@
 * 다익스트라 알고리즘
 */
 #include <iostream>
-#include <algorithm>
 #include <vector>
 #define INF 1e9	// 무한
 using namespace std;
@@ -72,6 +71,7 @@ int main()
 	}
 
 	fill_n(d, 100001, INF);
+
 	dijkstra(start);
 	for (int i = 1; i <= n; i++)
 	{
