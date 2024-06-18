@@ -4,26 +4,26 @@
 */
 #include <iostream>
 #include <vector>
-#define INF 1e9	// 무한
+#define INF 1e9
 using namespace std;
 
-// 노드의 갯수 n, 간선의 갯수 m, 시작 노드 번호 start
 int n, m, start;
-vector<pair<int, int>> graph[100001];
-bool visited[100001];
-// 최단 거리 테이블
-int d[100001];
+// 간선 정보 저장 벡터
+vector<pair<int, int>> v[10001];
+// 최단 경로 코스트 저장 배열
+int d[10001];
+// 노드 방문 기록 저장 배열
+bool visited[10001];
 
-// 방문하지 않은 노드 중 최단 거리가 짧은 노드 번호 반환
-int getSmallNode()
+int getSmallestNode()
 {
-	int min_val = INF;
+	int min_v = INF;
 	int index = 0;
 	for (int i = 1; i <= n; i++)
 	{
-		if (d[i] < min_val && !visited[i])
+		if (d[i] < min_v && !visited[i])
 		{
-			min_val = d[i];
+			min_v = d[i];
 			index = i;
 		}
 	}
@@ -32,27 +32,30 @@ int getSmallNode()
 
 void dijkstra(int start)
 {
+	// 첫번째 노드 처리
 	d[start] = 0;
 	visited[start] = true;
-	for (int j = 0; j < graph[start].size(); j++)
+
+	// 첫번째 노드로부터 거리를 코스트 저장 배열에 저장
+	for (int i = 0; i < v[start].size(); i++)
 	{
-		// start(0)와 연결된 노드의 최단 거리 설정
-		d[graph[start][j].first] = graph[start][j].second;
+		d[v[start][i].first] = v[start][i].second;
 	}
-	// 노드 갯수만큼 반복(단 시작 노드는 제외)
+
+	// 시작 노드 제외 횟수만큼 반복 n-1
 	for (int i = 0; i < n - 1; i++)
 	{
-		// 최단 거리가 짧은 노드 처리
-		int now = getSmallNode();
+		// 다음 대상 노드 취득 및 방문처리
+		int now = getSmallestNode();
 		visited[now] = true;
 		// 해당 노드와 연결된 다른 노드 확인
-		for (int j = 0; j < graph[now].size(); j++)
+		for (int j = 0; j < v[now].size(); j++)
 		{
-			int cost = d[now] + graph[now][j].second;
-			// 기존 코스트보다 짧은 경우
-			if (cost < d[graph[now][j].first])
+			int cost = d[now] + v[now][j].second;
+			// 기존 코스트와 비교
+			if (cost < d[v[now][j].first])
 			{
-				d[graph[now][j].first] = cost;
+				d[v[now][j].first] = cost;
 			}
 		}
 	}
@@ -62,24 +65,27 @@ int main()
 {
 	cin >> n >> m;
 	cin >> start;
+
+	// 간선 정보 입력
 	for (int i = 0; i < m; i++)
 	{
-		// 간선 정보 입력
-		int x, y, z;
-		cin >> x >> y >> z;
-		graph[x].push_back(make_pair(y, z));
+		int a, b, c;
+		cin >> a >> b >> c;
+		v[a].push_back(make_pair(b, c));
 	}
 
-	fill_n(d, 100001, INF);
+	// 코스트 미계산 배열 요소 임의의 값 INF로 초기화
+	fill_n(d, 10001, INF);
 
+	// 다익스트라
 	dijkstra(start);
+
+	// 모든 노드에 대한 최단 거리 출력
 	for (int i = 1; i <= n; i++)
 	{
-		if (d[i] == INF)
-		{
-			cout << "INFINITY" << '\n';
-		}
+		// 해당 노드의 코스트가 초기치(INF)라면
+		if (d[i] == INF) cout << "도달할 수 없는 노드 " << '\n';
 		else
-			cout << d[i] << '\n';
+			cout << i << "번째 노드까지의 최단 거리 " << d[i] << '\n';
 	}
 }
