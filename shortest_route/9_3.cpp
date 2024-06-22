@@ -1,66 +1,72 @@
 /*
-최단 경로
-플로이드 워셜 알고리즘
-모든 노드에서 모든 노드로의 최단 경로 구하는 알고리즘
+* 플로이드  워셜 알고리즘
 */
 #include <iostream>
-#include <algorithm>
 #define INF 1e9
 using namespace std;
 
-// 노드의 갯수 n, 간선의 갯수 m
+// 노드의 개수 n, 간선의 개수 m
 int n, m;
+
 // 최단 경로를 저장할 2차원 배열 생성
 int graph[501][501];
 
 int main()
 {
-	cin >> n >> m;
-	
-	// 2차원 배열 초기화
-	for (int i = 0; i < 501; i++)
-	{
-		fill_n(graph[i],  + 501, INF);
-	}
+	cin >> n;
+	cin >> m;
 
-	// 자기 자신인 경우 0으로 초기화
+	// 최단 경로 배열 초기화
 	for (int i = 1; i <= n; i++)
 	{
 		for (int j = 1; j <= n; j++)
 		{
-			if (i == j) graph[i][j] = 0;
+			graph[i][j] = INF;
 		}
 	}
-	// 간선 정보 입력
+
+	// 자기 자신 노드 호출 시 코스트 0
+	for (int i = 1; i <= n; i++)
+	{
+		for (int j = 1; j <= n; j++)
+		{
+			if (i == j)
+			{
+				graph[i][j] = 0;
+			}
+		}
+	}
+
+	// 간선 정보 읽어오기
 	for (int i = 0; i < m; i++)
 	{
+		// 시작 노드 a, 종료 노드 b, 코스트 c
 		int a, b, c;
 		cin >> a >> b >> c;
 		graph[a][b] = c;
 	}
 
-	// 점화식에 따른 알고리즘 수행
-	// Dab = min(Dab, Dak + Dkb)
+	// 플로이드 워셜 알고리즘 실행
 	for (int k = 1; k <= n; k++)
 	{
-		for (int a = 1; a <= n; a++)
+		for (int i = 1; i <= n; i++)
 		{
-			for (int b = 1; b <= n; b++)
+			for (int j = 1; j <= n; j++)
 			{
-				graph[a][b] = min(graph[a][b], graph[a][k] + graph[k][b]);
+				graph[i][j] = min(graph[i][j], graph[i][k] + graph[k][j]);
 			}
 		}
 	}
 
 	// 결과 출력
-	for (int a = 1; a <= n; a++)
+	for (int i = 1; i <= n; i++)
 	{
-		for (int b = 1; b <= n; b++)
+		for (int j = 1; j <= n; j++)
 		{
-			if (graph[a][b] == INF)
-				cout << "도달할 수 없는 노드입니다" << ' ';
+			if (graph[i][j] == INF)
+				cout << "도달할 수 없는 노드입니다" << " ";
 			else
-				cout << graph[a][b] << ' ';
+				cout << graph[i][j] << " ";
 		}
 		cout << '\n';
 	}
