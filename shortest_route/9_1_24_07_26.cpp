@@ -6,7 +6,7 @@ using namespace std;
 // 노드 개수 n, 간선 개수 m, 시작 지점 start
 int n, m, start;
 // 코스트 입력 받을 벡터
-vector<pair<int, int>> v[100001];
+vector<pair<int, int> > v[100001];
 // 최단 거리를 저장할 정수형 배열
 int d[100001];
 // 방문 여부를 판단할 논리형 배열
