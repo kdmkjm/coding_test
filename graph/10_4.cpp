@@ -38,15 +38,25 @@ int main()
 		graph[i] = i;
 	}
 
+    bool cycle = false;
+
 	for (int i = 0; i < m; i++)
 	{
 		int a, b;
 		cin >> a >> b;
-		unionParent(a, b);
+        if(findParent(a) == findParent(b))
+        {
+            cycle = true;
+            break;
+        }
+        else
+        {
+		    unionParent(a, b);
+        }
 	}
 
 	// 사이클 판별
-	if (graph[n] = graph[1])
+	if (cycle)
 	{
 		cout << "in cycle" << '\n';
 	}
