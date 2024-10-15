@@ -5,67 +5,61 @@ using namespace std;
 
 int n, k, l;
 int map[101][101];
-vector<pair<int, char>> v;
+vector<pair<int,char> > v;
 
-int dx[4] = { 0,1,0,-1 };
-int dy[4] = { 1,0,-1,0 };
+int dx[4] = {0, 1, 0, -1};
+int dy[4] = {1, 0, -1, 0};
 
 int turn(int direction, char c)
 {
-	if (c != 'L')
+	if(c == 'L')
 	{
-		if (direction == 3)
-			direction = 0;
-		else
-			direction += 1;
+		if(direction == 0)	direction = 3;
+		else	direction -= 1;
 	}
 	else
 	{
-		if (direction == 0)
-			direction = 3;
-		else
-			direction -= 1;
+		if(direction == 3)	direction = 0;
+		else	direction += 1;
 	}
 	return direction;
 }
-
-int simulate()
+int dummy()
 {
-	int direction = 0;	// 오른쪽 이동
-	map[1][1] = 2;		// 뱀이 존재할 경우 2(시작점)
-	int result = 0;		// 실행시간
-	int x = 1, y = 1;	// 시작점
-	queue<pair<int, int>> q;	// 뱀의 상태 나타내는 큐
-	q.push(make_pair(x, y));
-	int index = 0;		// 몇 초째의 방향 전환 정보를 참조해야되는지 값
+	int direction = 0;
+	int result = 0;
+	int x = 1, y = 1;
+	int index = 0;
+	map[x][y] = 2;	// 뱀이 있을 때 2
+	queue<pair<int,int> > q;
+	q.push(make_pair(x,y));
 
-	while (true)
+	// 종료 규칙에 걸리기 전까지 반복
+	while(true)
 	{
-		// 뱀 이동 후 좌표
+		// 몸길이를 늘려 머리를 다음칸에 위치시킵니다.
 		int nx = x + dx[direction];
-		int ny = y + dy[direction];
+		int ny = y + dy[direction];	
 
-		// 벽 또는 자기 자신과 몸을 부딪히면 게임 끝
-		if (0 < nx && nx <= n && 0 < ny && ny <= n && map[nx][ny] != 2)
+		// 종료 규칙 판명
+		if(0 < nx && nx <= n && 0 < ny && ny <= n && map[nx][ny] != 2)
 		{
-			// 게임이 종료 조건에 만족하지 않는다면
-			// 이동한 칸에 사과가 있다면 사과 없애고 꼬리 움직이지 않음
-			if (map[nx][ny] == 1)
+			// 만약 이동한 칸에 사과가 있다면, 그 칸에 있던 사과는 없어지고 꼬리는 움직이지 않습니다.
+			if(map[nx][ny] == 1)
 			{
 				map[nx][ny] = 2;
+				q.push(make_pair(nx,ny));
 			}
-			// 사과가 없다면 꼬리칸 비우기
+			// 만약 이동한 칸에 사과가 없다면, 몸길이를 줄여서 꼬리가 위치한 칸을 비워줍니다.
 			else
 			{
+				int mx = q.front().first;
+				int my = q.front().second;
+				q.pop();	// 꼬리 비우기
+				map[mx][my] = 0;
 				map[nx][ny] = 2;
-				int px = q.front().first;
-				int py = q.front().second;
-				q.pop();
-				map[px][py] = 0;
+				q.push(make_pair(nx,ny));
 			}
-
-			// 이동한 칸을 큐에 넣어주기
-			q.push(make_pair(nx, ny));
 		}
 		else
 		{
@@ -76,33 +70,35 @@ int simulate()
 		x = nx;
 		y = ny;
 		result += 1;
-		if (index < l && result == v[index].first)
+
+		if(index < l && result == v[index].first)
 		{
 			direction = turn(direction, v[index].second);
 			index += 1;
 		}
 	}
+
 	return result;
 }
 
 int main()
 {
-	cin >> n;	// 보드의 크기
-	cin >> k;	// 사과의 개수
-	for (int i = 0; i < k; i++)	// 사과의 위치 입력
+	cin >> n;
+	cin >> k;
+	for(int i = 0; i < k; i++)
 	{
 		int a, b;
 		cin >> a >> b;
-		map[a][b] = 1;	// 사과가 존재할 때 1
+		map[a][b] = 1;	// 사과 있을 때 1
 	}
-	cin >> l;	// 반환 변환 정보
-	for (int i = 0; i < l; i++)
+	cin >> l;
+	for(int i = 0; i < l; i++)
 	{
 		int x;
 		char c;
 		cin >> x >> c;
-		v.push_back(make_pair(x, c));
+		v.push_back(make_pair(x,c));
 	}
 
-	cout << simulate() << '\n';
+	cout << dummy() << '\n';
 }
