@@ -8,7 +8,7 @@ int n, m;
 vector<pair<int,int> > house;
 vector<pair<int,int> > chicken;
 
-int calcSum(vector<pair<int,int> > now)
+int calcSum(vector<pair<int, int> > now)
 {
     int result = 0;
     for(int i = 0; i < house.size(); i++)
@@ -18,8 +18,8 @@ int calcSum(vector<pair<int,int> > now)
         int tmp = INF;
         for(int j = 0; j < now.size(); j++)
         {
-            int nowx = now[i].first;
-            int nowy = now[i].second;
+            int nowx = now[j].first;
+            int nowy = now[j].second;
             tmp = min(tmp, abs(nowx - hx) + abs(nowy - hy));
         }
         result += tmp;
@@ -63,8 +63,7 @@ int main()
             }
         }
         result = min(result, calcSum(now));
-        cout << result << " " << calcSum(now) <<'\n';
     }while(prev_permutation(v.begin(), v.end()));
 
-//    cout << result << '\n';
+    cout << result << '\n';
 }
