@@ -5,10 +5,10 @@
 using namespace std;
 
 int n, m;
-vector<pair<int,int>> house;
-vector<pair<int,int>> chicken;
+vector<pair<int,int> > house;
+vector<pair<int,int> > chicken;
 
-int getSum(vector<pair<int, int>> v)
+int getSum(vector<pair<int, int> > v)
 {
 	int result = 0;
 	for (int i = 0; i < house.size(); i++)
@@ -54,7 +54,7 @@ int main()
 	
 	do
 	{
-		vector<pair<int, int>> now;
+		vector<pair<int, int> > now;
 		for (int i = 0; i < chicken.size(); i++)
 		{
 			if (v[i])
