@@ -1,5 +1,3 @@
-// 재풀이 필요. 기록용 커밋.
-
 #include <iostream>
 #include <algorithm>
 using namespace std;
@@ -18,7 +16,7 @@ void virus(int x, int y)
 	{
 		int nx = x + dx[i];
 		int ny = y + dy[i];
-		if (nx >= 0 && ny >= 0 && ny < n && ny < m)
+		if (nx >= 0 && ny >= 0 && nx < n && ny < m)
 		{
 			if (temp[nx][ny] == 0)
 			{
