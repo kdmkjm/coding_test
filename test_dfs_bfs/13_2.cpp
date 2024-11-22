@@ -26,6 +26,7 @@ void virus(int x, int y)
 		}
 	}
 }
+
 int getScore()
 {
 	int score = 0;
