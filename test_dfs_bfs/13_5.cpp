@@ -4,42 +4,42 @@ using namespace std;
 
 int n;
 vector<int> num;
-vector<int> mark;
-int max_value = -1e9;
-int min_value = 1e9;
+vector<int> sign;
+int max_value;
+int min_value;
 
 void dfs(int i, int now)
 {
     if(i == n)
     {
-        min_value = min(min_value, now);
         max_value = max(max_value, now);
+        min_value = min(min_value, now);
     }
     else
     {
-        if(mark[0] > 0)
+        if(sign[0] > 0)
         {
-            mark[0]--;
+            sign[0]--;
             dfs(i + 1, now + num[i]);
-            mark[0]++;
+            sign[0]++;
         }
-        if(mark[1] > 0)
+        if(sign[1] > 0)
         {
-            mark[1]--;
+            sign[1]--;
             dfs(i + 1, now - num[i]);
-            mark[1]++;
+            sign[1]++;
         }
-        if(mark[2] > 0)
+        if(sign[2] > 0)
         {
-            mark[2]--;
+            sign[2]--;
             dfs(i + 1, now * num[i]);
-            mark[2]++;
+            sign[2]++;
         }
-        if(mark[3] > 0)
+        if(sign[3] > 0)
         {
-            mark[3]--;
+            sign[3]--;
             dfs(i + 1, now / num[i]);
-            mark[3]++;
+            sign[3]++;
         }
     }
 }
@@ -57,11 +57,13 @@ int main()
     {
         int a;
         cin >> a;
-        mark.push_back(a);
+        sign.push_back(a);
     }
+    max_value = -1e9;
+    min_value = 1e9;
 
-    // dfs
     dfs(1, num[0]);
+
     cout << max_value << '\n';
     cout << min_value << '\n';
 }
